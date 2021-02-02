@@ -60,4 +60,26 @@ function display_flash_message($key) {
 function redirect_to($path) {
 	header("Location: ".$path);
 	exit();
+};
+
+/* авторизация пользователя
+	string - $email
+	string - $password
+	Return value: boolean
+*/
+function login($email, $password, $pdo) {
+	$query = "SELECT * FROM users WHERE email = :email AND password = :password";
+	$stmt = $pdo->prepare($query);
+	$stmt -> execute([
+		email => $email,
+		password => $password
+	]);
+	$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	if (!$user){
+		set_flash_message('danger', 'Неверный email или пароль');
+		return false;
+	} else {
+		$SESSION['user_id'] = $user['id'];
+		return true;
+	}
 };	

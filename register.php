@@ -1,11 +1,10 @@
 <?php
 session_start();
-include 'functions.php'; 
+require_once 'connect.php';
+require_once 'functions.php'; 
 
 $email = $_POST['email'];
 $password = sha1($_POST ['password']);
-
-$pdo = new PDO("mysql:host=localhost;dbname=site_marlin;", "root", "mysql");
 
 if (isset($email) && ($password)){
 

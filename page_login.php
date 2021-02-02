@@ -1,6 +1,7 @@
 <?php 
 session_start();
-include 'register.php'; 
+require_once 'login.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +39,8 @@ include 'register.php';
         </div>
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
             <?php display_flash_message('success');?>
-            <form action="">
+            <?php display_flash_message('danger');?>
+            <form action="login.php" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
                     <input type="email" id="username" class="form-control" placeholder="Эл. адрес" value="">
