@@ -5,11 +5,16 @@ require_once 'connect.php';
 require_once 'functions.php';
 
 $email = $_POST['email'];
-$password = sha1($_POST ['password']);
+$password = $_POST ['password'];
 
-//if (isset($email) && ($password)){
-	if(login($email, $password, $pdo) === true){
-	$path = 'users.php';
+//$a = login($email, $password, $pdo);
+//var_dump($a);
+if (isset($email) && ($password)){
+	if (login($email, $password, $pdo) === true){
+		$path = 'users.php';
 	redirect_to($path);
-	}
-//} 
+} else {
+	$path = 'page_login.php';
+	redirect_to($path);}
+
+} 

@@ -4,8 +4,9 @@ require_once 'connect.php';
 require_once 'functions.php'; 
 
 $email = $_POST['email'];
-$password = sha1($_POST ['password']);
-
+$password = $_POST ['password'];
+//$a = get_user_by_email($email, $pdo);
+//var_dump($a);
 if (isset($email) && ($password)){
 
 	if (get_user_by_email($email,  $pdo)){

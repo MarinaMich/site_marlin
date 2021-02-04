@@ -7,7 +7,7 @@ function get_user_by_email($email,  $pdo) {
 	$guery = "SELECT * FROM users WHERE email=:email";
 	$stmt = $pdo->prepare($guery);
 	$stmt->execute(['email' => $email]);
-	$task = $stmt->fetch()['email'];
+	$task = $stmt->fetch(PDO::FETCH_ASSOC);
 	return $task;	
 };
 
@@ -21,7 +21,7 @@ function add_user($email, $password, $pdo) {
 	$stmt = $pdo->prepare($query);
 	$stmt ->execute([
 		'email' => $email,
-		'password' => $password
+		'password' => password_hash($password, PASSWORD_DEFAULT)
 	]);
 	//вернет ID последнего созданного пользователя
 	//первый вариант
@@ -68,18 +68,14 @@ function redirect_to($path) {
 	Return value: boolean
 */
 function login($email, $password, $pdo) {
-	$query = "SELECT * FROM users WHERE email = :email AND password = :password";
+	$query = "SELECT * FROM users WHERE email = :email";
 	$stmt = $pdo->prepare($query);
-	$stmt -> execute([
-		email => $email,
-		password => $password
-	]);
-	$user = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	if (!$user){
-		set_flash_message('danger', 'Неверный email или пароль');
-		return false;
-	} else {
+	$stmt->execute(['email' => $email]);
+	$user = $stmt->fetch(PDO::FETCH_ASSOC);
+	//return $user;
+	if (isset($user) && password_verify($password, $user->password)){
 		$SESSION['user_id'] = $user['id'];
-		return true;
-	}
+	} else {
+		set_flash_message('danger', 'Неверный email или пароль');
+	}	
 };	
