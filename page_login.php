@@ -1,7 +1,6 @@
 <?php 
 session_start();
 require_once 'login.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,15 +38,17 @@ require_once 'login.php';
         </div>
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
             <?php display_flash_message('success');?>
+            
             <?php display_flash_message('danger');?>
+            
             <form action="login.php" method="post">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
-                    <input type="email" id="username" class="form-control" placeholder="Эл. адрес" value="">
+                    <input type="email" id="username" class="form-control" name="email" placeholder="Эл. адрес" value="" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="password">Пароль</label>
-                    <input type="password" id="password" class="form-control" placeholder="" >
+                    <input type="password" id="password" class="form-control" name="password" placeholder=""  required>
                 </div>
                 <div class="form-group text-left">
                     <div class="custom-control custom-checkbox">
@@ -55,8 +56,9 @@ require_once 'login.php';
                         <label class="custom-control-label" for="rememberme">Запомнить меня</label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-default float-right">Войти</button>
+                <button id="js-login-btn" type="submit" class="btn btn-default float-right">Войти</button>
             </form>
+        
         </div>
         <div class="blankpage-footer text-center">
             Нет аккаунта? <a href="page_register.html"><strong>Зарегистрироваться</strong>

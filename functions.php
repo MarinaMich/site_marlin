@@ -70,12 +70,17 @@ function redirect_to($path) {
 function login($email, $password, $pdo) {
 	$query = "SELECT * FROM users WHERE email = :email";
 	$stmt = $pdo->prepare($query);
-	$stmt->execute(['email' => $email]);
+	$stmt->execute([
+		'email'=> $email
+	]);
 	$user = $stmt->fetch(PDO::FETCH_ASSOC);
-	//return $user;
-	if (isset($user) && password_verify($password, $user->password)){
+	$pass = password_verify($password, $user['password']);
+	
+	if (!empty($user) && $pass) {
 		$SESSION['user_id'] = $user['id'];
-	} else {
+		return true;
+	} 
+	else {
 		set_flash_message('danger', 'Неверный email или пароль');
 	}	
 };	
