@@ -84,3 +84,40 @@ function login($email, $password, $pdo) {
 		set_flash_message('danger', 'Неверный email или пароль');
 	}	
 };	
+
+/* Проверяет,авторизирован пользователь или нет
+	Возвращает true, если авторизирован, если нет- false
+	Return value: boolean
+*/
+function is_logged_in(){
+	if (isset($_SESSION['user_id'])){
+		return $_SESSION['user_id'];
+	} else return false;
+}
+
+/* Проверка прав администратора
+	1 - администратор, 2 - пользователь
+	Return value: boolean
+*/
+function is_admin($id, $pdo){
+	
+	$query = "SELECT * FROM users WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'id'=> $id,
+	]);
+	$user = $stmt->fetch(PDO::FETCH_ASSOC);
+	//return $user;
+	if ($user['role'] == '1'){
+		return true;
+	} else return false;
+}
+
+/* Вывод всех пользователей
+*/	
+function get_users($pdo){
+	$query = "SELECT * FROM users";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute();
+	return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
