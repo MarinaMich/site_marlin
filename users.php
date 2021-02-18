@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'authorization.php';
+require_once 'functions.php';
 
 ?>
 <!DOCTYPE html>
@@ -39,9 +40,9 @@ require_once 'authorization.php';
         </nav>
 
         <main id="js-page-content" role="main" class="page-content mt-3">
-            <div class="alert alert-success">
-                Профиль успешно обновлен.
-            </div>
+            <!--Вывод сообщения о добавлении пользователя -->
+            <?php display_flash_message('success'); ?>
+            
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -50,7 +51,7 @@ require_once 'authorization.php';
             <div class="row">
                 <div class="col-xl-12">
                     
-                    <?php if($role == true) echo '<a class="btn btn-success" href="create_user.html">Добавить</a>' ?>
+                    <?php if($role == true) echo '<a class="btn btn-success" href="create_user.php">Добавить</a>' ?>
                     
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
@@ -72,7 +73,7 @@ require_once 'authorization.php';
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
                                 <span class="status status-success mr-3">
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('<? echo $user['img'] ?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('<? echo $user['avatar'] ?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
@@ -105,7 +106,7 @@ require_once 'authorization.php';
                                         </a>
                                     </div>
                                     <?php endif; ?>
-                                    <span class="text-truncate text-truncate-xl"><? echo $user['profession'] ?></span>
+                                    <span class="text-truncate text-truncate-xl"><? echo $user['job_title'] ?></span>
                                 </div>
                                 <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                                     <span class="collapsed-hidden">+</span>
@@ -115,14 +116,14 @@ require_once 'authorization.php';
                         </div>
                         <div class="card-body p-0 collapse show">
                             <div class="p-3">
-                                <a href="tel:<?echo preg_replace("#(?<=\d)[\s-]+(?=\d)#","",$user['phone'])?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                <a href="tel:<? echo preg_replace("#(?<=\d)[\s-]+(?=\d)#","",$user['phone'])?>" class="mt-1 d-block fs-sm fw-400 text-dark">
                                     <i class="fas fa-mobile-alt text-muted mr-2"></i> <? echo $user['phone'] ?></a>
                                 <a href="mailto:oliver.kopyov@smartadminwebapp.com" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fas fa-mouse-pointer text-muted mr-2"></i> <? echo $user['add_email'] ?></a>
+                                    <i class="fas fa-mouse-pointer text-muted mr-2"></i> <? echo $user['email'] ?></a>
                                 <address class="fs-sm fw-400 mt-4 text-muted">
                                     <i class="fas fa-map-pin mr-2"></i> <? echo $user['address'] ?></address>
                                 <div class="d-flex flex-row">
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
+                                    <a href="<? echo $user['vk'] ?>" class="mr-2 fs-xxl" style="color:#4680C2">
                                         <i class="fab fa-vk"></i>
                                     </a>
                                     <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
