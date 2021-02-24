@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once 'authorization.php';
-require_once 'functions.php';
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +41,7 @@ require_once 'functions.php';
         <main id="js-page-content" role="main" class="page-content mt-3">
             <!--Вывод сообщения о добавлении пользователя -->
             <?php display_flash_message('success'); ?>
-            
+            <?php display_flash_message('danger');?>
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей

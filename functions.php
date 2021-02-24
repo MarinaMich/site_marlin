@@ -127,18 +127,19 @@ function get_users($pdo){
 	//$stmt->execute();
 	//return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$query = "SELECT * FROM users as u JOIN sozial_links as s_l ON u.id = s_l.user_id";
+	$query = "SELECT * FROM users as u LEFT JOIN sozial_links as s_l ON u.id = s_l.user_id";
 	$stmt = $pdo->prepare($query);
 	$stmt->execute();
 	return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /* Добавление и редактирование общей информации пользователя
+	int - $id
 	string - $username
 	string - $job_title
 	string - $phone
 	string - $address
-	Return value: boolean
+	Return value: null
 */
 function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
 	$query = "UPDATE users SET user_name = :user_name, job_title = :job_title, phone = :phone, address = :address WHERE id = :id";
@@ -188,6 +189,7 @@ function upload_avatar($fileTmpName, $fileName, $id, $pdo){
 		} else {
 			$imgDir = "img/demo/avatars/";
 			$avatar = $imgDir . $fileName;
+			//если временный каталог ОС, где PHP хранит закаченные файлы, может находиться на др. носителе, то примением copy(); 
 			move_uploaded_file($fileTmpName, $avatar);
 			if (move_uploaded_file($fileTmpName, $avatar)!== null){
 				$query = "UPDATE users SET avatar = :avatar WHERE id = :id";
@@ -223,3 +225,26 @@ function add_social_links($telegram, $instagram, $vk, $id){
 		'id' => $id
 	]);
 }
+
+/* Проверяем, принадлежит ли профиль текщему авторизованному пользователю
+	int - $logged_user_id
+	int - $edit_user_id
+	Return value: boolean
+*/
+function is_author($logged_user_id, $edit_user_id){
+	if($logged_user_id === $edit_user_id){
+		return true;
+	} 
+}
+
+/* Получить все данные пользователя по id
+	int - $id_prof
+	Return value: array
+*/
+function get_user_by_id($id_profil, $pdo){
+	$query = "SELECT * FROM users as u LEFT JOIN sozial_links as s_l ON u.id = s_l.user_id WHERE u.id = :id_profil";
+	$stmt = $pdo->prepare($query);
+	$stmt -> execute(['id_profil' => $id_profil]);
+	return $user_profil = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+

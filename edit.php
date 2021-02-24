@@ -1,3 +1,30 @@
+<?php 
+session_start();
+require_once 'functions.php'; 
+require_once 'connect.php';
+
+//возвращает на страницу входа, если не пройдена аутентификация
+if (!is_logged_in()){
+    redirect_to('page_login.php');
+}
+//получаем id аутентифицированного пользователя
+$id = is_logged_in();
+//получаем id пользователя, чей профиль редактируем
+$id_profil = $_GET['id'];
+//проверяем админ или нет
+//свой профиль или нет
+if (!(is_admin($id, $pdo)) && !(is_author($id, $id_profil))){
+    set_flash_message('danger', 'Можно редактировать только свой профиль');
+    redirect_to('users.php');
+}
+$user_profil = get_user_by_id($id_profil, $pdo);
+//сохраняем данные о пользователе данного профиля в сессию
+$_SESSION['user_profil'] = $user_profil;
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +65,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="edit_user.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -47,31 +74,31 @@
                                 <h2>Общая информация</h2>
                             </div>
                             <div class="panel-content">
-                                <!-- username -->
+                                <!-- user_name -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Иван иванов">
+                                    <label class="form-label" for="user_name">Имя</label>
+                                    <input type="text" id="user_name" class="form-control" name="user_name" value="<?php echo $user_profil['user_name']?>">
                                 </div>
 
-                                <!-- title -->
+                                <!-- job_title -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Marlin Веб-разработчик">
+                                    <input type="text" id="job_title" class="form-control" name="job_title" value="<?php echo $user_profil['job_title']?>">
                                 </div>
 
-                                <!-- tel -->
+                                <!-- phone -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="8 888 8888 88">
+                                    <label class="form-label" for="phone">Номер телефона</label>
+                                    <input type="text" id="phone" class="form-control" name="phone" value="<?php echo $user_profil['phone']?>">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Восточные Королевства, Штормград">
+                                    <label class="form-label" for="address">Адрес</label>
+                                    <input type="text" id="address" class="form-control" name="address" value="<?php echo $user_profil['address']?>">
                                 </div>
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Редактировать</button>
+                                    <button type="submit" class="btn btn-warning">Редактировать</button>
                                 </div>
                             </div>
                         </div>
