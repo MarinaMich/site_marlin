@@ -29,7 +29,7 @@ require_once 'authorization.php';
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="page_login.html">Войти</a>
+                        <a class="nav-link" href="page_login.php">Войти</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Выйти</a>
@@ -75,7 +75,7 @@ require_once 'authorization.php';
                                     <span class="rounded-circle profile-image d-block " style="background-image:url('<? echo $user['avatar'] ?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
-                                    <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
+                                    <a href="page_profile.php?id=<? echo $user['id'] ?>" class="fs-xl text-truncate text-truncate-lg text-info">
                                     <? echo $user['user_name'] ?>
                                     </a>
                                     <?php if($role === true || $_SESSION['user_id'] === $user['id']) :?>
