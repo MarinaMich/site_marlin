@@ -1,3 +1,26 @@
+<?php
+session_start();
+require_once 'functions.php'; 
+require_once 'connect.php';
+
+//возвращает на страницу входа, если не пройдена аутентификация
+if (!is_logged_in()){
+    redirect_to('page_login.php');
+}
+//получаем id аутентифицированного пользователя
+$id = is_logged_in();
+//получаем id пользователя, чей профиль редактируем
+$id_profil = $_GET['id'];
+//проверяем админ или нет
+//свой профиль или нет
+if (!(is_admin($id, $pdo)) && !(is_author($id, $id_profil))){
+    set_flash_message('danger', 'Можно редактировать только свой профиль');
+    redirect_to('users.php');
+}
+$user_profil = get_user_by_id($id_profil, $pdo);
+$_SESSION['user_profil'] = $user_profil;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +41,12 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="page_login.html">Войти</a>
+                    <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Выйти</a>
@@ -32,13 +55,14 @@
         </div>
     </nav>
     <main id="js-page-content" role="main" class="page-content mt-3">
+        <?php display_flash_message('danger'); ?>
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-lock'></i> Безопасность
             </h1>
-
         </div>
-        <form action="">
+
+        <form action="edit_security.php" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -49,14 +73,14 @@
                             <div class="panel-content">
                                 <!-- email -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="john@example.com">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="text" id="email" class="form-control" name="email" value="<?php echo $user_profil['email']?>">
                                 </div>
 
                                 <!-- password -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <label class="form-label" for="password">Пароль</label>
+                                    <input type="password" id="password" class="form-control" name="password">
                                 </div>
 
                                 <!-- password confirmation-->
@@ -67,7 +91,7 @@
 
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Изменить</button>
+                                    <button type="submit" class="btn btn-warning">Изменить</button>
                                 </div>
                             </div>
                         </div>

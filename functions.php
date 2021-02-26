@@ -248,3 +248,19 @@ function get_user_by_id($id_profil, $pdo){
 	return $user_profil = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+/* Редактируем входные данные: email и пароль
+	int - $id
+	string - $email
+	string - $password
+	Return value: null | boolean
+*/
+function edit_credentials($id, $email, $password, $pdo){
+	$query = "UPDATE users SET email = :email, password = :password WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'email' => $email,
+		'password' => password_hash($password, PASSWORD_DEFAULT),
+		'id' => $id
+	]);
+	//return true;
+}

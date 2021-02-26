@@ -89,7 +89,7 @@ require_once 'authorization.php';
                                         <a class="dropdown-item" href="edit.php?id=<? echo $user['id'] ?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
-                                        <a class="dropdown-item" href="security.php&id=<? echo $user['id'] ?>">
+                                        <a class="dropdown-item" href="security.php?id=<? echo $user['id'] ?>">
                                             <i class="fa fa-lock"></i>
                                         Безопасность</a>
                                         <a class="dropdown-item" href="status.php?id=<? echo $user['id'] ?>">
