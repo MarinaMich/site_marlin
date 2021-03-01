@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once 'test_auth_admin_author.php'; 
+$list = [
+    'online' => 'Онлайн',
+    'away' => 'Отошел',
+    'break' => 'Не беспокоить',
+];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +27,12 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="page_login.html">Войти</a>
+                    <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Выйти</a>
@@ -38,7 +47,7 @@
             </h1>
 
         </div>
-        <form action="">
+        <form action="edit_status.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -52,15 +61,21 @@
                                         <!-- status -->
                                         <div class="form-group">
                                             <label class="form-label" for="example-select">Выберите статус</label>
-                                            <select class="form-control" id="example-select">
-                                                <option>Онлайн</option>
-                                                <option>Отошел</option>
-                                                <option>Не беспокоить</option>
-                                            </select>
+                                            
+                                                <select name="list" class="form-control" id="example-select">
+                                                    <?php foreach ($list as $key => $item):?>
+                                                        <?php if($user_profil['status'] === $key): ?>
+                                                        <option value="<?php echo $key;?>" selected><?php echo $item;?></option>
+                                                        <?php else:?>
+                                                        <option value="<?php echo $key;?>" ><?php echo $item;?></option>
+                                                        <?php endif;?>
+                                                   <?php endforeach; ?>
+                                                </select>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                        <button class="btn btn-warning">Set Status</button>
+                                        <button type="submit" class="btn btn-warning">Выбрать</button>
                                     </div>
                                 </div>
                             </div>

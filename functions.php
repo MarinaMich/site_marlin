@@ -153,18 +153,6 @@ function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
 	]);
 }
 
-/* Установить статус
-	string - $status
-	Return value: null
-*/
-function set_status($status, $pdo, $id){
-	$query = "UPDATE users SET status = :status WHERE id = :id";
-	$stmt = $pdo->prepare($query);
-	$stmt->execute([
-		'status' => $status,
-		'id' => $id
-	]);
-}
 
 /* Загрузить аватар
 	array - $image
@@ -263,4 +251,19 @@ function edit_credentials($id, $email, $password, $pdo){
 		'id' => $id
 	]);
 	//return true;
+}
+
+/* Установить статус
+	int - $id
+	string - $status
+	Return value: null | boolean
+*/
+function set_status($id, $status, $pdo){
+	$query = "UPDATE users SET status = :status WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'status' => $status,
+		'id' => $id
+	]);
+	return true;
 }

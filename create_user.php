@@ -1,17 +1,11 @@
 <?php 
 session_start();
 require_once 'functions.php';
-//возвращает на страницу входа, если не пройдена аутентификация
-//if (!is_logged_in()){
-//    redirect_to('page_login.php');
-//}
-//получаем id аутентифицированного пользователя
-//$id = is_logged_in();
-//проверяем админ или нет
-//if(is_admin($id, $pdo) === false){
-//    redirect_to('page_login.php');
-//}
-
+$list = [
+    'online' => 'Онлайн',
+    'away' => 'Отошел',
+    'break' => 'Не беспокоить',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,19 +56,19 @@ require_once 'functions.php';
                                 <h2>Общая информация</h2>
                             </div>
                             <div class="panel-content">
-                                <!-- username -->
+                                <!-- user_name -->
                                 <div class="form-group">
                                     <label class="form-label" for="user_name">Имя</label>
                                     <input type="text" id="user_name" name="user_name" class="form-control">
                                 </div>
 
-                                <!-- title -->
+                                <!-- job_title -->
                                 <div class="form-group">
                                     <label class="form-label" for="job_title">Место работы</label>
                                     <input type="text" id="job_title" name="job_title" class="form-control">
                                 </div>
 
-                                <!-- tel -->
+                                <!-- phone -->
                                 <div class="form-group">
                                     <label class="form-label" for="phone">Номер телефона</label>
                                     <input type="text" id="phone" name="phone" class="form-control">
@@ -112,10 +106,14 @@ require_once 'functions.php';
                                 <!-- status -->
                                 <div class="form-group">
                                     <label class="form-label" for="example-select">Выберите статус</label>
-                                    <select name="status" class="form-control" id="example-select">
-                                        <option>Онлайн</option>
-                                        <option>Отошел</option>
-                                        <option>Не беспокоить</option>
+                                    <select name="list" class="form-control" id="example-select">
+                                        <?php foreach ($list as $key => $item):?>
+                                            <?php if($user_profil['status'] === $key): ?>
+                                            <option value="<?php echo $key;?>" selected><?php echo $item;?></option>
+                                            <?php else:?>
+                                            <option value="<?php echo $key;?>" ><?php echo $item;?></option>
+                                            <?php endif;?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
