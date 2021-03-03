@@ -158,14 +158,14 @@ function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
 	string - $image
 	Return value: null | boolean
 */
-function has_image($id, $image){
+function has_image($id, $image, $pdo){
 	$query = "SELECT avatar FROM users WHERE id = :id";
 	$stmt = $pdo->prepare($query);
 	$stmt->execute([
 		'id' => $id
 	]);
 	$avatar = $stmt->fetchColumn();
-	if($avatar == $image){
+	if (!empty($avatar) && $avatar === $image){
 		return true;
 	}
 }
@@ -206,6 +206,20 @@ function upload_avatar($fileTmpName, $fileName, $id, $pdo){
 			}
 		}	
 	}	
+}
+
+/* Удаления файла аватара из папки на сервере после загрузки нового файла
+	int - $id
+	Return value: null 
+*/
+function delete_image($id, $pdo){
+	$query = "SELECT avatar FROM users WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'id' => $id
+	]);
+	$avatar = $stmt->fetchColumn();
+	unlink($avatar);
 }
 
 /* Добавить ссылки на соцсети
