@@ -1,3 +1,8 @@
+<?php
+session_start();
+require_once 'test_auth_admin_author.php'; 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,12 +23,12 @@
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="page_login.html">Войти</a>
+                    <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Выйти</a>
@@ -36,9 +41,10 @@
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-image'></i> Загрузить аватар
             </h1>
-
+            <!--Вывод сообщения об ошибке при загрузке файла -->
+            <?php //display_flash_message('link'); ?>
         </div>
-        <form action="">
+        <form action="edit_media.php" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -48,12 +54,16 @@
                             </div>
                             <div class="panel-content">
                                 <div class="form-group">
-                                    <img src="img/demo/authors/josh.png" alt="" class="img-responsive" width="200">
+                                    <?php if(!empty($user_profil['avatar'])):?>
+                                    <img src="<?php echo $user_profil['avatar'];?>" alt="" class="img-responsive" width="100">
+                                    <?php else:?>
+                                    <img src="img/demo/avatars/avatar-m.png" alt="" class="img-responsive" width="100"> 
+                                    <?php endif;?>   
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label" for="example-fileinput">Выберите аватар</label>
-                                    <input type="file" id="example-fileinput" class="form-control-file">
+                                    <input type="file" id="example-fileinput" name="img" class="form-control-file">
                                 </div>
 
 

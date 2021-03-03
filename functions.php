@@ -153,6 +153,22 @@ function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
 	]);
 }
 
+/* Проверка - есть ли аватар у пользователя
+	int - $id
+	string - $image
+	Return value: null | boolean
+*/
+function has_image($id, $image){
+	$query = "SELECT avatar FROM users WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'id' => $id
+	]);
+	$avatar = $stmt->fetchColumn();
+	if($avatar == $image){
+		return true;
+	}
+}
 
 /* Загрузить аватар
 	array - $image
@@ -170,13 +186,14 @@ function upload_avatar($fileTmpName, $fileName, $id, $pdo){
 	        set_flash_message('link', "Неверный тип файла: " . $file['name'] . "!");
 	        $path = 'create_user.php';
 			redirect_to($path);
-		} elseif ($file['size'] > 3000) {
-	        set_flash_message('link', "Слишком большой размер файла: " . $file['size'] . "! Не более 2.8 Кб!");
+		} elseif ($file['size'] > 30000) {
+	        set_flash_message('link', "Слишком большой размер файла: " . $file['size'] . "! Не более 29.8 Кб!");
 	        $path = 'create_user.php';
 			redirect_to($path);
 		} else {
 			$imgDir = "img/demo/avatars/";
-			$avatar = $imgDir . $fileName;
+			//для уникальности имени файла time()
+			$avatar = $imgDir .time(). $fileName;
 			//если временный каталог ОС, где PHP хранит закаченные файлы, может находиться на др. носителе, то примением copy(); 
 			move_uploaded_file($fileTmpName, $avatar);
 			if (move_uploaded_file($fileTmpName, $avatar)!== null){
