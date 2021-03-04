@@ -6,6 +6,7 @@ require_once 'functions.php';
 $email = $_POST['email'];
 $password = $_POST ['password'];
 $user_name = $_POST ['user_name'];
+$role = $_POST['role'];
 $job_title = $_POST ['job_title'];
 $phone = $_POST ['phone'];
 $address = $_POST ['address'];
@@ -26,6 +27,7 @@ if (isset($email) && ($password)){
 			$id = add_user($email, $password);
 			edit_info($user_name, $job_title, $phone, $address, $pdo, $id);
 			set_status($id, $status, $pdo);
+			set_role($id, $role, $pdo);
 			upload_avatar($fileTmpName, $fileName, $id, $pdo);
 			add_social_links($telegram, $instagram, $vk, $id);
 			set_flash_message('success', 'Пользователь добавлен');

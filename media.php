@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'test_auth_admin_author.php'; 
+require_once 'test_auth_admin_author.php';
 
 ?>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@ require_once 'test_auth_admin_author.php';
                     <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="logout.php">Выйти</a>
                 </li>
             </ul>
         </div>

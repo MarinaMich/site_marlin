@@ -141,8 +141,8 @@ function get_users($pdo){
 	string - $address
 	Return value: null
 */
-function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
-	$query = "UPDATE users SET user_name = :user_name, job_title = :job_title, phone = :phone, address = :address WHERE id = :id";
+function edit_info($user_name, $job_title, $phone, $address,  $pdo, $id){
+	$query = "UPDATE users	SET user_name = :user_name, job_title = :job_title, phone = :phone, address = :address WHERE id = :id";
 	$stmt = $pdo->prepare($query);
 	$stmt->execute([
 		'user_name' => $user_name,
@@ -151,6 +151,7 @@ function edit_info($user_name, $job_title, $phone, $address, $pdo, $id){
 		'address' => $address,
 		'id' => $id
 	]);
+	
 }
 
 /* Проверка - есть ли аватар у пользователя
@@ -226,6 +227,7 @@ function delete_image($id, $pdo){
 	string - $telegram
 	string - $instagram
 	string - $vk
+	int - $id
 	Return value: null
 */
 function add_social_links($telegram, $instagram, $vk, $id){
@@ -242,6 +244,25 @@ function add_social_links($telegram, $instagram, $vk, $id){
 		'instagram' => $instagram, 
 		'vk' => $vk,
 		'id' => $id
+	]);
+}
+
+/* Редактирование ссылок на соцсети
+	string - $telegram
+	string - $instagram
+	string - $vk
+	int - $id
+	Return value: null
+*/
+function edit_social_links($telegram, $instagram, $vk, $id, $pdo){
+	$user_id = $id;
+	$query = "UPDATE sozial_links SET vk = :vk, telegram = :telegram, instagram = :instagram WHERE user_id = :user_id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'vk' => $vk,
+		'telegram' => $telegram,
+		'instagram' => $instagram,
+		'user_id' => $user_id
 	]);
 }
 
@@ -297,4 +318,43 @@ function set_status($id, $status, $pdo){
 		'id' => $id
 	]);
 	return true;
+}
+
+/* Установить роль (допуск)
+	int - $id
+	string - $role
+	Return value: null | boolean
+*/
+function set_role($id, $role, $pdo){
+	$query = "UPDATE users SET role = :role WHERE id = :id";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'role' => $role,
+		'id' => $id
+	]);
+	return true;
+}
+
+/* Удалить пользователя
+	int -$id
+	Return value: null | boolean
+*/
+function delete($id, $pdo){
+	$query = "DELETE FROM users  WHERE id = :id_profil";
+	$stmt = $pdo->prepare($query);
+	$stmt->execute([
+		'id_profil' => $id
+	]);
+	return true;
+}
+
+/* "Выход" с сайта
+*/
+function logout(){
+	//очистить данные сессии для текущего сценария
+	$_SESSION = [];
+	//удалить cookie
+	unset($_COOKIE[session_name()]);
+	//удалить хранилище сессии
+	session_destroy();
 }

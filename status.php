@@ -6,6 +6,7 @@ $list = [
     'away' => 'Отошел',
     'break' => 'Не беспокоить',
 ];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +36,7 @@ $list = [
                     <a class="nav-link" href="page_login.php">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="logout.php">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -62,18 +63,13 @@ $list = [
                                         <div class="form-group">
                                             <label class="form-label" for="example-select">Выберите статус</label>
                                             
-                                                <select name="list" class="form-control" id="example-select">
-                                                    <?php foreach ($list as $key => $item):?>
-                                                        <?php if($user_profil['status'] === $key): ?>
-                                                        <option value="<?php echo $key;?>" selected><?php echo $item;?></option>
-                                                        <?php else:?>
-                                                        <option value="<?php echo $key;?>" ><?php echo $item;?></option>
-                                                        <?php endif;?>
-                                                   <?php endforeach; ?>
-                                                </select>
-                                            
+                                            <select name="list" class="form-control" id="example-select">
+                                                <?php foreach ($list as $key => $item):?>
+                                                    <option value="<?php echo $key;?>" <?= $user_profil['status'] === $key ? "selected" : "" ?>><?php echo $item;?></option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
-                                    </div>
+                                    </div>    
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                         <button type="submit" class="btn btn-warning">Выбрать</button>
                                     </div>

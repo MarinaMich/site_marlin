@@ -6,6 +6,10 @@ $list = [
     'away' => 'Отошел',
     'break' => 'Не беспокоить',
 ];
+$role = [
+    '1' => 'Администратор',
+    '2' => 'Пользователь',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +32,7 @@ $list = [
         <div class="collapse navbar-collapse" id="navbarColor02">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Главная <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="users.php">Главная <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -36,7 +40,7 @@ $list = [
                     <a class="nav-link" href="page_login.html">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="logout.php">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -108,11 +112,16 @@ $list = [
                                     <label class="form-label" for="example-select">Выберите статус</label>
                                     <select name="list" class="form-control" id="example-select">
                                         <?php foreach ($list as $key => $item):?>
-                                            <?php if($user_profil['status'] === $key): ?>
-                                            <option value="<?php echo $key;?>" selected><?php echo $item;?></option>
-                                            <?php else:?>
                                             <option value="<?php echo $key;?>" ><?php echo $item;?></option>
-                                            <?php endif;?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <!-- role -->
+                                <div class="form-group">
+                                    <label class="form-label" for="example-select">Выберите роль</label>
+                                    <select name="role" class="form-control" id="example-select">
+                                        <?php foreach ($role as $key => $item):?>
+                                            <option value="<?php echo $key;?>" ><?php echo $item;?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -121,7 +130,6 @@ $list = [
                                     <!--Вывод сообщения об ошибке при загрузке файла -->
                                     <?php display_flash_message('link'); ?>
                                     <label class="form-label" for="example-fileinput">Загрузить аватар</label>
-                                    <input type="hidden" name="MAX_FILE_SIZE"/>
                                     <input type="file" id="example-fileinput" name="img" class="form-control-file">
                                 </div>
                             </div>
